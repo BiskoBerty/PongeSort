@@ -6,8 +6,13 @@
 package Client;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -32,6 +37,25 @@ public class Client {
             PrintWriter out = new PrintWriter(server.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
             
+            try {
+                FileOutputStream FO = new FileOutputStream("test.ser");
+                ObjectOutputStream OS = new ObjectOutputStream(FO); 
+
+                OS.writeObject(list);
+                OS.flush();
+                OS.close();
+                FO.close();
+                
+                
+                FileInputStream FI = new FileInputStream("test.ser");
+                ObjectInputStream IS = new ObjectInputStream(FI);
+                
+            } catch (FileNotFoundException ex) {
+                System.out.println("Impossibile trovare il file");
+            } catch (IOException ex) {
+                System.out.println("Hai rotto java");
+            }
+
 //            while (true) {
                 out.println(list[1]);
                 String risposta = in.readLine();
